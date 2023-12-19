@@ -65,6 +65,7 @@ void	init_game(char **map)
 	}
 	win = mlx_new_window(mlx, (ft_strlen(map[0]) - 1) * 32,
 			ft_nbrline(map) * 32, "Pasteque");
+	mlx_set_font(mlx, win, "rsrc/Daydream.ttf");
 	game_loop(mlx, win, chara);
 	free(chara);
 }

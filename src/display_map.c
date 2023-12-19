@@ -32,13 +32,13 @@ static void	display_map(t_sprite *sprite)
 		x = 0;
 		while (sprite->map[y][x] && sprite->map[y][x] != '\n')
 		{
-			if (x % 7 == 0 && sprite->map[y][x] != '1')
+			if (x % 7 == 0 && sprite->map[y][x] == '0')
 				display_sprite(sprite, sprite->tile3, x, y);
 			else if (x % 4 == 0 && sprite->map[y][x] != '1')
 				display_sprite(sprite, sprite->tile2, x, y);
-			else if (sprite->map[y][x] != '1')
+			else if (sprite->map[y][x] == '0')
 				display_sprite(sprite, sprite->tile1, x, y);
-			else
+			else if (sprite->map[y][x] == '1')
 				display_sprite(sprite, sprite->wall, x, y);
 			if (sprite->map[y][x] == 'C')
 				display_sprite(sprite, sprite->collec, x, y);
