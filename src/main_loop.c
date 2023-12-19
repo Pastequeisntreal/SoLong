@@ -12,54 +12,59 @@
 
 #include "mlx.h"
 #include "so_long.h"
+#include "libft.h"
 #include <stdlib.h>
 
-t_hero	*hero_constructor(char **map)
+int	get_event(int key_code, t_hero *params)
 {
-	t_hero		*chara;
-	int			x;
-	int			y;
+	if (key_code == 'w')
+		move_chara(params, -1, 0);
+	if (key_code == 's')
+		move_chara(params, 1, 0);
+	if (key_code == 'a')
+		move_chara(params, 0, -1);
+	if (key_code == 'd')
+		move_chara(params, 0, 1);
+	if (key_code == 65307 || params->end_game)
+		mlx_loop_end(params->mlx);
+	return (0);
+}
 
-	chara = malloc(sizeof(t_hero));
-	if (!chara)
-		return (NULL);
-	chara->collect = 0;
-	chara->move = 0;
-	chara->map = map;
-	chara->save_tile = '0';
-	y = 0;
-	while (map[y])
-	{
-		x = 0;
-		while (map[y][x] && map[y][x] == 'P')
-		{
-			if (map[y][x] == 'P')
-			{
-				chara->position.y = y;
-				chara->position.x = x;
-			}
-			if (map[y][x] == 'C')
-				chara->collect += 1;
-			x++;
-		}
-		y++;
-	}
-	return (chara);
+int	close_event(void *suppr)
+{
+	mlx_loop_end(suppr);
+	return (0);
 }
 
 void	game_loop(void *mlx_ptr, void *win, t_hero *chara)
 {
+	t_sprite	*sprites;
 
+	sprites = sprite_constructor(chara->map, mlx_ptr, win);
+	mlx_key_hook(win, get_event, chara);
+	mlx_loop_hook(mlx_ptr, display_screen, sprites);
+	mlx_hook(win, 17, 0, close_event, mlx_ptr);
+	mlx_loop(mlx_ptr);
+	display_end(chara);
+	sprite_destructor(sprites);
 }
 
 void	init_game(char **map)
 {
-	void	*mlx_ptr;
+	void	*mlx;
 	void	*win;
 	t_hero	*chara;
 
-	chara = hero_constructor(map);
-	mlx_ptr = mlx_init();
-	win = mlx_new_window(mlx_ptr, 300, 300, "Pasteque");
-	game_loop(mlx_ptr, win, chara);
+	mlx = mlx_init();
+	chara = hero_constructor(map, mlx);
+	if (!chara)
+	{
+		ft_printf("Error: malloc the character struct");
+		free_map(map);
+		exit(0);
+	}
+	win = mlx_new_window(mlx, (ft_strlen(map[0]) - 1) * 32,
+			ft_nbrline(map) * 32, "Pasteque");
+	game_loop(mlx, win, chara);
+	free(chara);
 }

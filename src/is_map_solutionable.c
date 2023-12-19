@@ -1,48 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_linelen.c                                       :+:      :+:    :+:   */
+/*   is_map_solutionable.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gberthol <gberthol@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/06 14:16:45 by gberthol          #+#    #+#             */
-/*   Updated: 2023/12/06 14:16:45 by gberthol         ###   ########.fr       */
+/*   Created: 2023/12/19 10:51:07 by gberthol          #+#    #+#             */
+/*   Updated: 2023/12/19 10:51:07 by gberthol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include <stddef.h>
-#include <fcntl.h>
+#include "libft.h"
+#include "so_long.h"
 #include <stdlib.h>
-#include <unistd.h>
 
-size_t	ft_linelen(char *path)
+int	is_map_solutionable(char **map)
 {
-	int		fd;
-	size_t	len;
-	char	*str;
+	int		res;
+	char	**cpy;
 
-	fd = open(path, O_RDONLY);
-	if (fd < 0)
-		return (0);
-	len = 0;
-	str = get_next_line(fd);
-	while (str)
+	cpy = doublearrdup(map);
+	if (!cpy)
 	{
-		free(str);
-		len++;
-		str = get_next_line(fd);
+		ft_putstr_fd("Error: malloc can't allocate memory", 2);
+		exit(1);
 	}
-	close(fd);
-	return (len);
-}
-
-size_t	ft_nbrline(char **str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
+	res = pathfinder_map(cpy);
+	free_map(cpy);
+	return (res);
 }

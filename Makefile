@@ -17,6 +17,12 @@ CFLAGS    =	-Wall -Wextra -Werror -Ilibft -Iincludes -I /usr/local/include
 SRC	=	src/main.c					\
 		src/pathfinder_map.c		\
 		src/ft_map.c				\
+		src/display_map.c			\
+		src/main_loop.c				\
+		src/move_chara.c			\
+		src/struct_constructor.c	\
+		src/win_handling.c			\
+		src/is_map_solutionable.c	\
 		src/map_handling.c
 
 OBJ	=	$(SRC:.c=.o)

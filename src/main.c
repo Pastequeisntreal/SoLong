@@ -36,6 +36,6 @@ int	main(int argc, char **argv)
 		return (ft_derror_main(2));
 	result = get_file(argv[1]);
 	check_map(result);
-	//init_game(result);
+	init_game(result);
 	free_map(result);
 }

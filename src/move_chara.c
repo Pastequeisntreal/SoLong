@@ -13,37 +13,31 @@
 #include "libft.h"
 #include "so_long.h"
 
-void	move_char(t_hero *chara, int y, int x)
+void	move_chara(t_hero *chara, int y, int x)
 {
 	char	save;
 
-	save = chara->map[chara->POS->y + y][chara->POS->x + x];
+	save = chara->map[chara->POS.y + y][chara->POS.x + x];
 	if (save != '1')
 	{
+		if (save == 'M')
+		{
+			chara->end_game = 2;
+			return ;
+		}
 		if (save == 'C')
 		{
-			chara->collectible -= 1;
+			chara->collect -= 1;
 			save = '0';
 		}
-		if (save == 'M')
-			chara->position.x = 0;
-		chara->map[chara->POS->y + y][chara->POS->x + x] = 'P';
-		chara->map[chara->POS->y][chara->POS->x] = chara->save_tile;
+		chara->map[chara->POS.y + y][chara->POS.x + x] = 'P';
+		chara->map[chara->POS.y][chara->POS.x] = chara->save_tile;
 		chara->save_tile = save;
+		chara->POS.y += y;
+		chara->POS.x += x;
+		chara->move++;
+		ft_printf("%d\n", chara->move);
 	}
-}
-
-int	check_end(t_hero *chara, int max_collectible)
-{
-	if (chara->save_tile == 'E' && chara->collectible == 0)
-	{
-		ft_printf("Victory !\n");
-		return (1);
-	}
-	else if (chara->position.x == 0)
-	{
-		ft_printf("Defeat !\n");
-		return (1);
-	}
-	return (0);
+	if (chara->save_tile == 'E' && chara->collect == 0)
+		chara->end_game = 1;
 }

@@ -10,11 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "so_long.h"
-#include <stdlib.h>
 
-char	transform_around(char c, int *collectible)
+static char	transform_around(char c, int *collectible)
 {
 	if (c != '0' && c != 'C')
 		return (c);
@@ -23,8 +21,18 @@ char	transform_around(char c, int *collectible)
 	return ('2');
 }
 
-int	check_around(char **map, int y, int x, int *collectible)
+static void	change_around(char **map, int *collectible, int x, int y)
 {
+	map[y][x - 1] = transform_around(map[y][x - 1], collectible);
+	map[y][x + 1] = transform_around(map[y][x + 1], collectible);
+	map[y + 1][x] = transform_around(map[y + 1][x], collectible);
+	map[y - 1][x] = transform_around(map[y - 1][x], collectible);
+}
+
+static int	check_around(char **map, int y, int x, int *collectible)
+{
+	int	change;
+
 	if (map[y][x] != '0' && map[y][x] != 'E' && map[y][x] != 'C')
 		return (1);
 	if (map[y - 1][x] != '2' && map[y + 1][x] != '2'
@@ -38,16 +46,17 @@ int	check_around(char **map, int y, int x, int *collectible)
 		*collectible -= 1;
 	if (map[y][x] != 'E')
 		map[y][x] = '2';
-	map[y][x - 1] = transform_around(map[y][x - 1], collectible);
-	map[y][x + 1] = transform_around(map[y][x + 1], collectible);
-	map[y + 1][x] = transform_around(map[y + 1][x], collectible);
-	map[y - 1][x] = transform_around(map[y - 1][x], collectible);
+	change = 1;
+	if (map[y][x - 1] != '2' || map[y][x + 1] != '2'
+		|| map[y - 1][x] != '2' || map[y + 1][x] != '2')
+		change = 0;
+	change_around(map, collectible, x, y);
 	if (map[y][x] == 'E')
-		return (1);
+		return (change);
 	return (0);
 }
 
-int	calc_path(char **map, int y, int x, int collectible)
+static int	calc_path(char **map, int y, int x, int collectible)
 {
 	int	change;
 	int	result;
@@ -103,20 +112,4 @@ int	pathfinder_map(char **map)
 	if (find[0] != 1 || find[1] != 1 || find[2] < 1)
 		return (1);
 	return (calc_path(map, coor[0], coor[1], find[2]));
-}
-
-int	is_map_solutionable(char **map)
-{
-	int		res;
-	char	**cpy;
-
-	cpy = doublearrdup(map);
-	if (!cpy)
-	{
-		ft_putstr_fd("Error: malloc can't allocate memory", 2);
-		exit(1);
-	}
-	res = pathfinder_map(cpy);
-	free_map(cpy);
-	return (res);
 }
