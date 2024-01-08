@@ -55,8 +55,9 @@ void	init_game(char **map)
 	void	*win;
 	t_hero	*chara;
 
+	win = NULL;
 	mlx = mlx_init();
-	chara = hero_constructor(map, mlx);
+	chara = hero_constructor(map, mlx, win);
 	if (!chara)
 	{
 		ft_printf("Error: malloc the character struct");
@@ -64,8 +65,8 @@ void	init_game(char **map)
 		exit(0);
 	}
 	win = mlx_new_window(mlx, (ft_strlen(map[0]) - 1) * 32,
-			ft_nbrline(map) * 32, "Pasteque");
-	mlx_set_font(mlx, win, "rsrc/Daydream.ttf");
+			ft_nbrline(map) * 32 + 20, "Pasteque");
+	chara->win = win;
 	game_loop(mlx, win, chara);
 	free(chara);
 }

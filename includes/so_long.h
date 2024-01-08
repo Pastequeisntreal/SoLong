@@ -29,6 +29,7 @@ typedef struct s_hero
 	char		save_tile;
 	int			end_game;
 	void		*mlx;
+	void		*win;
 }	t_hero;
 
 # define POS position
@@ -66,7 +67,7 @@ int			pathfinder_map(char **map);
 
 char		**doublearrdup(char **tab);
 
-t_hero		*hero_constructor(char **map, void *mlx);
+t_hero		*hero_constructor(char **map, void *mlx, void *win);
 t_sprite	*sprite_constructor(char **map, void *mlx_ptr, void *win);
 
 #endif

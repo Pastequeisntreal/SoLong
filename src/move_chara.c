@@ -12,6 +12,22 @@
 
 #include "libft.h"
 #include "so_long.h"
+#include "mlx.h"
+#include <stdlib.h>
+
+void	print_move(t_hero *chara)
+{
+	char	*message;
+
+	chara->move++;
+	ft_printf("%d\n", chara->move);
+	message = ft_itoa(chara->move);
+	if (!message)
+		exit(0);
+	mlx_clear_window(chara->mlx, chara->win);
+	mlx_string_put(chara->mlx, chara->win, 16,
+		(int)ft_nbrline(chara->map) * 32 + 10, 16777215, message);
+}
 
 void	move_chara(t_hero *chara, int y, int x)
 {
@@ -35,8 +51,7 @@ void	move_chara(t_hero *chara, int y, int x)
 		chara->save_tile = save;
 		chara->POS.y += y;
 		chara->POS.x += x;
-		chara->move++;
-		ft_printf("%d\n", chara->move);
+		print_move(chara);
 	}
 	if (chara->save_tile == 'E' && chara->collect == 0)
 		chara->end_game = 1;

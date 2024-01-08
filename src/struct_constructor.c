@@ -41,7 +41,7 @@ static	t_hero	*get_pos(char **map, t_hero *chara)
 	return (chara);
 }
 
-t_hero	*hero_constructor(char **map, void *mlx)
+t_hero	*hero_constructor(char **map, void *mlx, void *win)
 {
 	t_hero		*chara;
 
@@ -54,6 +54,7 @@ t_hero	*hero_constructor(char **map, void *mlx)
 	chara->save_tile = '0';
 	chara->end_game = 0;
 	chara->mlx = mlx;
+	chara->win = win;
 	return (get_pos(map, chara));
 }
 

@@ -41,7 +41,7 @@ $(LIB):
 	make -C libft/
 
 $(NAME):	$(OBJ) Makefile
-	cc -o $(NAME) $(OBJ) $(CFLAGS) -Llibft -lft -Lmlx_linux -lmlx_Linux -L. -Imlx_linux -lXext -lX11 -lm -lz
+	cc -o $(NAME) $(OBJ) $(CFLAGS) -Llibft -lft -Lmlx_linux -lmlx_Linux -L. -Imlx_linux -lXext -lX11 -lm -lz -g3
 
 clean:
 	$(RM) $(OBJ)
