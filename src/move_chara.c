@@ -23,7 +23,7 @@ void	print_move(t_hero *chara)
 	ft_printf("%d\n", chara->move);
 	message = ft_itoa(chara->move);
 	if (!message)
-		exit(0);
+		return (chara->end_game = 3, (void)0);
 	mlx_clear_window(chara->mlx, chara->win);
 	mlx_string_put(chara->mlx, chara->win, 16,
 		(int)ft_nbrline(chara->map) * 32 + 10, 16777215, message);
